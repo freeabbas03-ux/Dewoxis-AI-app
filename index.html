@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-[#090b0f] text-gray-200 overflow-x-hidden w-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dewoxis Node  - Enterprise Cloud Server Control & Smart Orchestration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            400: '#f43f5e',
+                            500: '#f43f5e',
+                            950: '#022c22',
+                        },
+                        dark: {
+                            950: '#07080c',
+                            900: '#0c0f16',
+                            800: '#141822',
+                            700: '#1e2533',
+                            600: '#2b3447',
+                            400: '#64748b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Modern custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #07080c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e2533;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f43f5e;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .glowing-ring {
+            animation: pulse-ring 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-[#090b0f] text-gray-200 overflow-x-hidden w-full relative">
+
+    <!-- Glowing Background blobs container to prevent mobile overflow -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-rose-500/10 rounded-full blur-[100px]"></div>
+        <div class="absolute top-[800px] right-1/4 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[120px]"></div>
+        <div class="absolute top-[1800px] left-1/3 w-80 h-80 bg-rose-500/5 rounded-full blur-[100px]"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 bg-[#07080c]/85 backdrop-blur-md border-b border-dark-800/60 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-all">
+                    <!-- SVG Server Icon -->
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-xl font-bold text-white tracking-tight">Dewoxis Node </span>
+                    <span class="block text-[10px] font-mono font-medium text-brand-400 uppercase tracking-widest -mt-1">CLOUD PRO</span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-dark-400">
+                <a href="#features" class="hover:text-white transition-colors">Features</a>
+                <a href="#calculator" class="hover:text-white transition-colors">Pricing</a>
+                <a href="#terminal-demo" class="hover:text-white transition-colors">Interactive Demo</a>
+                <a href="#specifications" class="hover:text-white transition-colors">Node Hardware</a>
+                <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+            </nav>
+
+            <!-- CTA & Mobile Toggle -->
+            <div class="flex items-center space-x-4">
+                <div class="hidden sm:flex items-center space-x-2 text-xs font-mono px-3 py-1.5 bg-dark-900 border border-dark-800 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 glowing-ring"></span>
+                    <span class="text-gray-400">All Nodes Operational</span>
+                </div>
+                <button onclick="scrollToId('terminal-demo')" class="hidden sm:inline-flex relative overflow-hidden group cursor-pointer px-5 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-500 to-indigo-600 shadow-md shadow-brand-500/10 hover:shadow-brand-500/20 transition-all duration-300">
+                    <span class="relative z-10 flex items-center space-x-2">
+                        <span>Launch Console</span>
+                        <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-brand-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </button>
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-dark-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path id="hamburger" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        <path id="cross" class="hidden" stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-dark-800 bg-dark-950 px-4 py-6 space-y-4 shadow-2xl">
+            <a href="#features" class="block text-base font-semibold text-gray-400 hover:text-white" onclick="toggleMobileMenu()">Features</a>
+            <a href="#calculator" class="block text-base font-semibold text-gray-400 hover:text-white" onclick="toggleMobileMenu()">Pricing</a>
+            <a href="#terminal-demo" class="block text-base font-semibold text-gray-400 hover:text-white" onclick="toggleMobileMenu()">Interactive Demo</a>
+            <a href="#specifications" class="block text-base font-semibold text-gray-400 hover:text-white" onclick="toggleMobileMenu()">Node Hardware</a>
+            <a href="#contact" class="block text-base font-semibold text-gray-400 hover:text-white" onclick="toggleMobileMenu()">Contact</a>
+            <div class="pt-4 border-t border-dark-800 flex flex-col space-y-3">
+                <div class="flex items-center space-x-2 text-xs font-mono py-1">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 glowing-ring"></span>
+                    <span class="text-gray-300">Status: 99.98% System Uptime</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-16 lg:py-28 lg:pb-36">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                
+                <!-- Left Content -->
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                    <div class="inline-flex items-center space-x-2 py-1 px-3.5 bg-brand-500/10 border border-brand-500/20 rounded-full text-brand-400 text-xs font-semibold uppercase tracking-wider">
+                        <span>🚀 Next-Gen VPS Orchestration</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
+                        Power Your Stack With <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-indigo-400">Absolute Control</span>.
+                    </h1>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 font-normal">
+                        Enterprise Cloud Server Control & Smart Orchestration. Connect, deploy, reboot, and scale bare-metal, virtual servers, or container workloads directly from one secure, beautiful dashboard.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <button onclick="scrollToId('calculator')" class="w-full sm:w-auto px-8 py-4 rounded-xl text-sm font-bold text-white bg-brand-500 hover:bg-brand-600 shadow-lg shadow-brand-500/25 transition-all text-center">
+                            Deploy Node Instantly
+                        </button>
+                        <a href="#features" class="w-full sm:w-auto px-8 py-4 rounded-xl text-sm font-bold text-gray-300 bg-dark-900 border border-dark-800 hover:border-dark-700 hover:text-white transition-all text-center">
+                            Explore Features
+                        </a>
+                    </div>
+                    
+                    <!-- Tech Stats Badge Row -->
+                    <div class="grid grid-cols-3 gap-2 sm:gap-4 xl:gap-6 pt-6 max-w-lg mx-auto lg:mx-0 border-t border-dark-800/80">
+                        <div>
+                            <span class="block text-xl sm:text-3xl font-extrabold text-white font-mono">12ms</span>
+                            <span class="block text-[10px] sm:text-xs font-medium text-slate-400">Avg Socket Ping</span>
+                        </div>
+                        <div>
+                            <span class="block text-xl sm:text-3xl font-extrabold text-white font-mono">99.999%</span>
+                            <span class="block text-[10px] sm:text-xs font-medium text-slate-400">Guaranteed SLA</span>
+                        </div>
+                        <div>
+                            <span class="block text-xl sm:text-3xl font-extrabold text-white font-mono">400 Gbps</span>
+                            <span class="block text-[10px] sm:text-xs font-medium text-slate-400">Network Capacity</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Interactive UI Simulation Mockup -->
+                <div class="lg:col-span-5 relative">
+                    <div class="absolute inset-0 bg-brand-500/10 blur-[80px] rounded-3xl"></div>
+                    
+                    <!-- Outer Dashboard Box -->
+                    <div class="relative bg-dark-950 border border-dark-800 rounded-2xl shadow-2xl overflow-hidden">
+                        
+                        <!-- Top Chrome Bar -->
+                        <div class="h-10 bg-dark-900 border-b border-dark-800/60 px-4 flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                            </div>
+                            <span class="text-[10px] font-mono text-dark-400 select-none">root@aethernode:~_</span>
+                            <span class="text-xs bg-brand-500/10 text-brand-400 px-2 py-0.5 rounded-md font-mono font-medium">SYS_01</span>
+                        </div>
+
+                        <!-- Core Virtual Console Simulator -->
+                        <div class="p-5 space-y-5">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 id="v-node-title" class="font-bold text-white text-sm">Hyperion Node - Rack #3</h4>
+                                    <span class="text-xs font-mono text-gray-500">IP: 142.250.190.46</span>
+                                </div>
+                                <span id="v-node-status" class="px-2.5 py-1 text-xs font-mono font-bold rounded-full bg-emerald-500/10 text-emerald-400">RUNNING</span>
+                            </div>
+
+                            <!-- Ring metrics -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-dark-900 border border-dark-800 rounded-xl p-3 space-y-1">
+                                    <span class="text-xs text-gray-400 block font-medium">CPU Load</span>
+                                    <div class="flex items-baseline space-x-1.5">
+                                        <span id="v-cpu-pct" class="text-xl font-bold font-mono text-white">42%</span>
+                                        <span class="text-[10px] text-gray-500">8 Cores</span>
+                                    </div>
+                                    <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden mt-2">
+                                        <div id="v-cpu-bar" class="bg-brand-500 h-full rounded-full transition-all duration-700" style="width: 42%"></div>
+                                    </div>
+                                </div>
+                                <div class="bg-dark-900 border border-dark-800 rounded-xl p-3 space-y-1">
+                                    <span class="text-xs text-gray-400 block font-medium">RAM Allocation</span>
+                                    <div class="flex items-baseline space-x-1.5">
+                                        <span id="v-ram-pct" class="text-xl font-bold font-mono text-white">56%</span>
+                                        <span class="text-[10px] text-gray-500">16 GB</span>
+                                    </div>
+                                    <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden mt-2">
+                                        <div id="v-ram-bar" class="bg-indigo-500 h-full rounded-full transition-all duration-700" style="width: 56%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Live Simulated Controls -->
+                            <div class="flex gap-2">
+                                <button onclick="simulateNodeInteraction('reboot')" class="flex-1 cursor-pointer bg-dark-900 hover:bg-dark-800 border border-dark-800 py-2.5 rounded-lg text-xs font-semibold text-white transition flex items-center justify-center space-x-2">
+                                    <svg class="w-3.5 h-3.5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 15.2M12 8V12l3 3" />
+                                    </svg>
+                                    <span>Soft Reboot</span>
+                                </button>
+                                <button id="v-power-btn" onclick="simulateNodeInteraction('toggle')" class="flex-1 cursor-pointer bg-brand-500 hover:bg-brand-600 text-white py-2.5 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-2">
+                                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L12 12" />
+                                    </svg>
+                                    <span id="v-power-text">Shutdown Node</span>
+                                </button>
+                            </div>
+
+                            <!-- Interactive server selector inside hero -->
+                            <div class="border-t border-dark-800/80 pt-4 space-y-2">
+                                <span class="text-[11px] font-mono uppercase tracking-widest text-[#06b6d4]">Cluster Selectors</span>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="switchHeroNode('Hyperion Node', '142.250.190.46', '42%','56%','RUNNING', 'emerald')" class="py-1.5 px-2 bg-dark-900 hover:bg-dark-800 rounded text-[10px] font-mono text-brand-400 border border-brand-500/20 truncate">SYS_01_HYPERION</button>
+                                    <button onclick="switchHeroNode('Apex VM Compute', '157.240.22.35', '78%','89%','RUNNING', 'emerald')" class="py-1.5 px-2 bg-dark-900 hover:bg-dark-800 rounded text-[10px] font-mono text-slate-400 border border-dark-800 truncate">SYS_02_APEX</button>
+                                    <button onclick="switchHeroNode('SecureDB Node_V2', '0.0.0.0', '0%','0%','SHUTDOWN', 'neutral')" class="py-1.5 px-2 bg-dark-900 hover:bg-dark-800 rounded text-[10px] font-mono text-slate-400 border border-dark-800 truncate">SYS_03_DB_NODE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features Section -->
+    <section id="features" class="py-20 lg:py-24 bg-dark-950 border-y border-dark-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="text-xs font-mono font-bold text-brand-400 uppercase tracking-widest">⚡ Hardened Infrastructure</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Everything you need to orchestrate state-of-the-art server arrays.</h2>
+                <p class="text-slate-400">A full arsenal of tools designed to bypass terminal complexity and speed up your day-to-day administration routines.</p>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8 pt-6">
+                
+                <!-- Feature 1 -->
+                <div class="bg-[#0c0f16] border border-dark-800 hover:border-brand-500/30 p-8 rounded-2xl group transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-brand-500/10 rounded-xl flex items-center justify-center text-brand-400 group-hover:scale-110 transition-transform mb-6">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Smart Auto-healer</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Automatic recovery daemons that instantly monitor container restarts, free exhausted RAM, and launch back-up services without manual intervention.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-[#0c0f16] border border-dark-800 hover:border-brand-500/30 p-8 rounded-2xl group transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform mb-6">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Layer 3/4 & 7 Firewall</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Fine-grain port forwarding and dynamic dDoS filtering block suspicious bad actors instantaneously while facilitating regular traffic pipelines.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-[#0c0f16] border border-dark-800 hover:border-brand-500/30 p-8 rounded-2xl group transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform mb-6">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Zero-Latency Shell</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        An integrated SSH terminal utilizing secure websockets, offering instant responsiveness, tab completion, command histories, and colorized diagnostic prints.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-[#0c0f16] border border-dark-800 hover:border-brand-500/30 p-8 rounded-2xl group transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform mb-6">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Cron Visualizer</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Configure system scheduler crons via a neat visual layout. Plan shell scripts, database rollups, and cache clears effortlessly.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-[#0c0f16] border border-dark-800 hover:border-brand-500/30 p-8 rounded-2xl group transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-violet-500/10 rounded-xl flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform mb-6">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7v12m0 0l-4-4m4 4l4-4m0 6V7m0 0l-4 4m4-4l4 4m5 2a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Hyper Scaler Pipelines</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Link load balancers to scale instances linearly as traffic increments. Support automated triggers based on custom CPU/Bandwidth caps.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="bg-[#0c0f16] border border-dark-800 hover:border-brand-500/30 p-8 rounded-2xl group transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center text-rose-400 group-hover:scale-110 transition-transform mb-6">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Immutable Backups</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Export local system snapshots directly to off-premises cloud targets safely, guaranteeing 100% security against ransomware threats.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Terminal & Live Daemon Simulator -->
+    <section id="terminal-demo" class="py-20 lg:py-24 bg-dark-900 border-b border-dark-800 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="text-xs font-mono font-bold text-brand-400 uppercase tracking-widest">⚙️ Live Command Simulator</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Test-drive the actual control console now.</h2>
+                <p class="text-slate-400">Click actions below to trigger complex server events and watch the server status update inside the virtual secure shell.</p>
+            </div>
+
+            <!-- Terminal GUI Layout -->
+            <div class="grid lg:grid-cols-12 gap-8 max-w-5xl mx-auto items-stretch">
+                
+                <!-- Quick Command Panel -->
+                <div class="lg:col-span-4 bg-[#07080c] border border-dark-800 rounded-2xl p-6 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-bold text-white tracking-tight uppercase tracking-wider text-brand-400">Daemon Controls</h4>
+                        <p class="text-[13px] text-gray-400">Select pre-authored tasks to execute shell actions inside the simulation terminal.</p>
+                        
+                        <div class="space-y-2">
+                            <button onclick="execDemoCmd('systemctl status nginx', 'nginx')" class="w-full text-left bg-dark-900 hover:bg-dark-800 border border-dark-800/80 p-3 rounded-xl text-xs font-mono font-medium text-white transition flex items-center justify-between">
+                                <span>$ systemctl status nginx</span>
+                                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded">SYSTEMD</span>
+                            </button>
+                            <button onclick="execDemoCmd('docker ps --format table', 'docker')" class="w-full text-left bg-dark-900 hover:bg-dark-800 border border-dark-800/80 p-3 rounded-xl text-xs font-mono font-medium text-white transition flex items-center justify-between">
+                                <span>$ docker ps --format table</span>
+                                <span class="text-[10px] bg-cyan-500/10 text-cyan-400 px-1.5 py-0.5 rounded">CONTAINER</span>
+                            </button>
+                            <button onclick="execDemoCmd('df -h /dev/nvme0n1', 'df')" class="w-full text-left bg-dark-900 hover:bg-dark-800 border border-dark-800/80 p-3 rounded-xl text-xs font-mono font-medium text-white transition flex items-center justify-between">
+                                <span>$ df -h /dev/nvme0n1</span>
+                                <span class="text-[10px] bg-indigo-500/10 text-indigo-400 px-1.5 py-0.5 rounded">DISK</span>
+                            </button>
+                            <button onclick="execDemoCmd('bench --cpu-stress', 'bench')" class="w-full text-left bg-dark-900 hover:bg-dark-800 border border-dark-800/80 p-3 rounded-xl text-xs font-mono font-medium text-white transition flex items-center justify-between">
+                                <span>$ bench --cpu-stress</span>
+                                <span class="text-[10px] bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded">STRESS</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- active status tracker -->
+                    <div class="border-t border-dark-800/80 pt-4">
+                        <span class="text-[11px] font-mono uppercase tracking-widest text-slate-500 block mb-2">VIRTUAL SERVICES</span>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-[10px] px-2 py-1 rounded bg-[#0c0f16] border border-dark-800 text-emerald-400 font-mono">NGINX: ACTIVE</span>
+                            <span class="text-[10px] px-2 py-1 rounded bg-[#0c0f16] border border-dark-800 text-emerald-400 font-mono">MYSQL: ACTIVE</span>
+                            <span class="text-[10px] px-2 py-1 rounded bg-[#0c0f16] border border-dark-800 text-emerald-400 font-mono">DOCKER: ACTIVE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Shell Component -->
+                <div class="lg:col-span-8 flex flex-col bg-[#07080c] border border-dark-800 rounded-2xl overflow-hidden min-h-[360px]">
+                    <div class="h-10 bg-dark-900 border-b border-dark-800/80 px-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-slate-700"></span>
+                            <span class="text-[11px] font-mono text-gray-400">Secure WebSocket Shell</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="clearDemoOutput()" class="text-[10px] font-mono text-slate-500 hover:text-white transition">Clear Shell</button>
+                        </div>
+                    </div>
+
+                    <!-- shell messages scrolling container -->
+                    <div id="shell-logs" class="p-5 font-mono text-xs overflow-y-auto flex-1 space-y-2 h-[280px] text-gray-300">
+                        <div class="text-slate-500">AetherDaemon Connection established standard-v2.</div>
+                        <div class="text-slate-500">Type or select commands on the left panel to begin auditing.</div>
+                        <div><span class="text-emerald-400">root@aether-node-ams:~#</span> <span class="text-white">uname -a</span></div>
+                        <div class="text-neutral-400 pb-1">Linux aether-node-ams 6.8.0-31-generic #31-Ubuntu SMP SMP PREEMPT_DYNAMIC Wed Apr 10 18:21:44 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux</div>
+                        <div id="shell-cursor-line"><span class="text-emerald-400">root@aether-node-ams:~#</span> <span class="relative inline-block w-2 h-4 bg-brand-500 animate-pulse ml-1 align-middle"></span></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Pricing Calculator -->
+    <section id="calculator" class="py-20 lg:py-24 bg-dark-950 border-b border-dark-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="text-xs font-mono font-bold text-brand-400 uppercase tracking-widest">💰 Slider Configurator</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Flexible cloud, fully sized by you.</h2>
+                <p class="text-slate-400">Scale resources dynamically to estimate precise hosting budgets. Simple pricing, zero lock-ins, billed strictly by the second.</p>
+            </div>
+
+            <!-- Dynamic Calculator Frame -->
+            <div class="max-w-4xl mx-auto bg-dark-900 border border-dark-850 rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-10 grid md:grid-cols-12 gap-8 md:gap-12">
+                
+                <!-- Left Sliders control -->
+                <div class="md:col-span-7 space-y-8">
+                    
+                    <!-- Slider 1 -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="font-bold text-white">vCPU Compute Cores</span>
+                            <span class="font-mono text-brand-400 font-bold text-base" id="calc-cpu-lbl">4 Cores</span>
+                        </div>
+                        <input type="range" id="slider-cpu" min="1" max="16" value="4" oninput="updatePricingEstimate()" class="w-full accent-brand-500 h-2 bg-dark-800 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-[11px] font-mono text-slate-500">
+                            <span>1 Core</span>
+                            <span>4 Cores</span>
+                            <span>8 Cores</span>
+                            <span>16 Cores</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 2 -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="font-bold text-white">ECC RAM Memory</span>
+                            <span class="font-mono text-brand-400 font-bold text-base" id="calc-ram-lbl">8 GB</span>
+                        </div>
+                        <input type="range" id="slider-ram" min="2" max="64" step="2" value="8" oninput="updatePricingEstimate()" class="w-full accent-brand-500 h-2 bg-dark-800 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-[11px] font-mono text-slate-500">
+                            <span>2 GB</span>
+                            <span>16 GB</span>
+                            <span>32 GB</span>
+                            <span>64 GB</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 3 -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="font-bold text-white">Enterprise NVMe SSD Storage</span>
+                            <span class="font-mono text-brand-400 font-bold text-base" id="calc-ssd-lbl">120 GB</span>
+                        </div>
+                        <input type="range" id="slider-ssd" min="20" max="500" step="10" value="120" oninput="updatePricingEstimate()" class="w-full accent-brand-500 h-2 bg-dark-800 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-[11px] font-mono text-slate-500">
+                            <span>20 GB</span>
+                            <span>120 GB</span>
+                            <span>250 GB</span>
+                            <span>500 GB</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Price Display Card -->
+                <div class="md:col-span-5 bg-[#07080c] border border-dark-800 rounded-2xl p-6 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">Total Estimate</h4>
+                        
+                        <div class="pt-2">
+                            <div class="flex items-baseline space-x-1.5">
+                                <span class="text-3xl font-extrabold text-white" id="calc-price-monthly">$28.00</span>
+                                <span class="text-xs font-medium text-slate-500">/ month</span>
+                            </div>
+                            <span class="text-xs font-mono text-brand-400" id="calc-price-hourly">Billed at ~$0.038 / hour</span>
+                        </div>
+
+                        <div class="border-t border-dark-800/85 pt-3 space-y-2 text-xs text-gray-400 list-none">
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                <span>Includes 1 IPv4 & 10 IPv6 IPs</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                <span>Free Anycast DDoS Shield</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                <span>No Setup & Contract Fees</span>
+                            </li>
+                        </div>
+                    </div>
+
+                    <button onclick="alert('Proceeding to deployment... This premium feature is simulated inside this HTML template.')" class="w-full bg-brand-500 hover:bg-brand-600 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all text-center cursor-pointer">
+                        Deploy Node Now
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- System Specifications -->
+    <section id="specifications" class="py-20 lg:py-24 bg-dark-900 border-b border-dark-800 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="text-xs font-mono font-bold text-brand-400 uppercase tracking-widest">🧬 Supercharged Hardware</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">The bare-metal benchmark stats.</h2>
+                <p class="text-slate-400">Zero virtualization compromises. High-frequency enterprise equipment backing your cluster endpoints.</p>
+            </div>
+
+            <!-- Specs Grid -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 hover:shadow-2xl">
+                
+                <!-- Spec 1 -->
+                <div class="bg-dark-950 border border-dark-800 p-6 rounded-xl space-y-3">
+                    <span class="text-xs font-mono uppercase text-[#06b6d4]">PROCESSORS</span>
+                    <h4 class="text-white text-lg font-bold">AMD EPYC™ 9654</h4>
+                    <p class="text-xs text-gray-400">Zen 4 core architecture running 2.4GHz base speed up to 3.7GHz Turbo boost.</p>
+                </div>
+
+                <!-- Spec 2 -->
+                <div class="bg-dark-950 border border-dark-800 p-6 rounded-xl space-y-3">
+                    <span class="text-xs font-mono uppercase text-[#06b6d4]">STORAGE MEDIUM</span>
+                    <h4 class="text-white text-lg font-bold">PCIe Gen5 NVMe SSD</h4>
+                    <p class="text-xs text-gray-400">Ultra-low latency SSD array delivering outstanding sequential read up to 14,000MB/s.</p>
+                </div>
+
+                <!-- Spec 3 -->
+                <div class="bg-dark-950 border border-dark-800 p-6 rounded-xl space-y-3">
+                    <span class="text-xs font-mono uppercase text-[#06b6d4]">ECC MEMORY</span>
+                    <h4 class="text-white text-lg font-bold">DDR5 4800MHz RAM</h4>
+                    <p class="text-xs text-gray-400">Error-Correcting Code architecture for high-security applications preventing state corruption.</p>
+                </div>
+
+                <!-- Spec 4 -->
+                <div class="bg-dark-950 border border-dark-800 p-6 rounded-xl space-y-3">
+                    <span class="text-xs font-mono uppercase text-[#06b6d4]">GLOBAL NET</span>
+                    <h4 class="text-white text-lg font-bold">Anycast Routing 100G</h4>
+                    <p class="text-xs text-gray-400">Multi-homed tier-1 transit operators ensuring high density pipeline routing.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Support & Contact -->
+    <section id="contact" class="py-20 lg:py-24 bg-dark-950 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left panel text -->
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-xs font-mono font-bold text-brand-400 uppercase tracking-widest">💬 Technical Assurances</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">We are ready to guide your migration.</h2>
+                    <p class="text-slate-400">
+                        Our cloud architects stand ready 24/7/365 to handle direct queries, customize node environments, or outline custom load pipelines for scaling businesses.
+                    </p>
+                    <div class="space-y-3 text-sm font-medium">
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                            <span>node@dewoxis.com</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                            <span>+1 (888) 555-NODE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right contact card form -->
+                <div class="lg:col-span-7">
+                    <div class="bg-dark-900 border border-dark-800 rounded-2xl p-6 sm:p-10 shadow-2xl">
+                        <form id="contact-form" onsubmit="handleDemoContact(event)" class="space-y-6">
+                            <div class="grid sm:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-300 uppercase block">Full Name</label>
+                                    <input required type="text" placeholder="John Doe" class="w-full bg-dark-950 border border-dark-805 border-neutral-800/80 rounded-xl px-4 py-3 text-sm focus:border-brand-500 text-white outline-none">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-300 uppercase block">Business Email</label>
+                                    <input required type="email" placeholder="john@enterprise.com" class="w-full bg-dark-950 border border-dark-805 border-neutral-800/80 rounded-xl px-4 py-3 text-sm focus:border-brand-500 text-white outline-none">
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-slate-300 uppercase block">Required Servers Size</label>
+                                <select class="w-full bg-dark-950 border border-dark-805 border-neutral-800/80 rounded-xl px-4 py-3 text-sm focus:border-brand-500 text-slate-300 outline-none">
+                                    <option>Startup Segment (1-5 host instances)</option>
+                                    <option>Scaleup Platform (6-20 host instances)</option>
+                                    <option>Enterprise Architecture (20+ dedicated nodes)</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-slate-300 uppercase block">Target Requirements</label>
+                                <textarea required rows="4" placeholder="Briefly specify your targets (e.g., Kubernetes database setups, Anycast geo IP load routing goals...)" class="w-full bg-dark-950 border border-dark-805 border-neutral-800/80 rounded-xl p-4 text-sm focus:border-brand-500 text-white outline-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full cursor-pointer bg-brand-500 hover:bg-brand-600 font-bold text-sm text-white py-4 rounded-xl transition duration-300 shadow-md">
+                                Submit Server Request
+                            </button>
+                        </form>
+                        <div id="contact-success" class="hidden text-center py-6 space-y-3">
+                            <div class="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto">
+                                <svg class="w-8 h-8 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            <h4 class="text-white text-lg font-bold">Query Stored Safely!</h4>
+                            <p class="text-sm text-gray-400">A virtual cluster setup engineer will reach out contextually within the hour.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-950 border-t border-dark-800/50 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+                <span class="text-lg font-bold text-white tracking-tight">Dewoxis Node </span>
+                <span class="block text-xs text-slate-500">© 2026 Dewoxis Node  Inc. All Rights Reserved. Optimized for ThemeForest/TemplateMonster sellers.</span>
+            </div>
+            <div class="flex space-x-6 text-xs text-slate-400">
+                <a href="#" class="hover:text-white transition">Privacy Rules</a>
+                <a href="#" class="hover:text-white transition">Terms of Delivery</a>
+                <a href="#" class="hover:text-white transition">Uptime SLA</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Pure JS logic for template interactive states -->
+    <script>
+        // Smooth scrolling helper
+        function scrollToId(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Mobile Burger Menu
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const hamburgerIcon = document.getElementById('hamburger');
+        const crossIcon = document.getElementById('cross');
+
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                hamburgerIcon.classList.toggle('hidden');
+                crossIcon.classList.toggle('hidden');
+            });
+        }
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            crossIcon.classList.add('hidden');
+        }
+
+        // Switch Hero mock server
+        function switchHeroNode(name, ip, cpu, ram, status, themeColor) {
+            document.getElementById('v-node-title').textContent = name + ' - Status';
+            document.getElementById('v-node-status').className = 'px-2.5 py-1 text-xs font-mono font-bold rounded-full ' + 
+                (status === 'RUNNING' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400');
+            document.getElementById('v-node-status').textContent = status;
+
+            document.getElementById('v-cpu-pct').textContent = cpu;
+            document.getElementById('v-cpu-bar').style.width = cpu;
+            document.getElementById('v-ram-pct').textContent = ram;
+            document.getElementById('v-ram-bar').style.width = ram;
+
+            const shutdownBtn = document.getElementById('v-power-btn');
+            const shutdownText = document.getElementById('v-power-text');
+            if (status === 'SHUTDOWN') {
+                shutdownBtn.className = 'flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-2';
+                shutdownText.textContent = 'Power On';
+            } else {
+                shutdownBtn.className = 'flex-1 bg-brand-500 hover:bg-brand-600 text-white py-2.5 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-2';
+                shutdownText.textContent = 'Shutdown Node';
+            }
+        }
+
+        // Soft interaction simulators
+        function simulateNodeInteraction(type) {
+            const statusLabel = document.getElementById('v-node-status');
+            if (type === 'reboot') {
+                statusLabel.className = 'px-2.5 py-1 text-xs font-mono font-bold rounded-full bg-amber-500/10 text-amber-400 animate-pulse';
+                statusLabel.textContent = 'REBOOTING';
+                setTimeout(() => {
+                    statusLabel.className = 'px-2.5 py-1 text-xs font-mono font-bold rounded-full bg-emerald-500/10 text-emerald-400';
+                    statusLabel.textContent = 'RUNNING';
+                    alert('Server Soft Reboot completed successfully inside the demo visualization.');
+                }, 2000);
+            } else if (type === 'toggle') {
+                const isRunning = statusLabel.textContent === 'RUNNING';
+                if (isRunning) {
+                    statusLabel.className = 'px-2.5 py-1 text-xs font-mono font-bold rounded-full bg-rose-500/10 text-rose-400';
+                    statusLabel.textContent = 'SHUTDOWN';
+                    document.getElementById('v-cpu-pct').textContent = '0%';
+                    document.getElementById('v-cpu-bar').style.width = '0%';
+                    document.getElementById('v-ram-pct').textContent = '0%';
+                    document.getElementById('v-ram-bar').style.width = '0%';
+                    document.getElementById('v-power-text').textContent = 'Power On';
+                    document.getElementById('v-power-btn').className = 'flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-2';
+                } else {
+                    statusLabel.className = 'px-2.5 py-1 text-xs font-mono font-bold rounded-full bg-emerald-500/10 text-emerald-400';
+                    statusLabel.textContent = 'RUNNING';
+                    document.getElementById('v-cpu-pct').textContent = '42%';
+                    document.getElementById('v-cpu-bar').style.width = '42%';
+                    document.getElementById('v-ram-pct').textContent = '56%';
+                    document.getElementById('v-ram-bar').style.width = '56%';
+                    document.getElementById('v-power-text').textContent = 'Shutdown Node';
+                    document.getElementById('v-power-btn').className = 'flex-1 bg-brand-500 hover:bg-brand-600 text-white py-2.5 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-2';
+                }
+            }
+        }
+
+        // Live Demo Terminal Log Execution
+        function execDemoCmd(cmd, type) {
+            const shellLogs = document.getElementById('shell-logs');
+            const cursorLine = document.getElementById('shell-cursor-line');
+            
+            // Generate clean timestamp
+            const now = new Date().toLocaleTimeString();
+            
+            // Build visual command insertion
+            const cmdDiv = document.createElement('div');
+            cmdDiv.className = 'pt-2';
+            cmdDiv.innerHTML = '<span class="text-emerald-400">root@aether-node-ams:~#</span> <span class="text-white">' + cmd + '</span> <span class="text-xs text-slate-600 font-mono">[' + now + ']</span>';
+            shellLogs.insertBefore(cmdDiv, cursorLine);
+            
+            // Generate contextual responses
+            let responseContent = '';
+            if (type === 'nginx') {
+                responseContent = '<span class="text-emerald-400">● nginx.service - A high performance web server</span>\n' +
+                                  '   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)\n' +
+                                  '   Active: <span class="text-emerald-400">active (running)</span> since Fri 2026-05-22 03:12:44 UTC; 4h 12min ago\n' +
+                                  '   Main PID: 120412 (nginx)\n' +
+                                  '   Tasks: 9 (limit: 48912)\n' +
+                                  '   Memory: 22.4M; Connections: <span class="text-cyan-400">1,241 active socket pipelines</span>\n' +
+                                  '   CGroup: /system.slice/nginx.service\n' +
+                                  '           └─120412 "nginx: master process"';
+            } else if (type === 'docker') {
+                responseContent = '<span class="text-slate-400">CONTAINER ID   IMAGE                 COMMAND                  STATUS          PORTS</span>\n' +
+                                  '<span class="text-white">e9421ea9a102   redis:7.2-alpine      "docker-entrypoint.s…"   Up 12 hours     0.0.0.0:6379->6379/tcp</span>\n' +
+                                  '<span class="text-white">f58dae761041   postgres:16-alpine    "docker-entrypoint.s…"   Up 12 hours     0.0.0.0:5432->5432/tcp</span>\n' +
+                                  '<span class="text-white">c091ad41a293   nginx:alpine          "/docker-entrypoint.…"   Up 4 hours      0.0.0.0:80->80/tcp</span>';
+            } else if (type === 'df') {
+                responseContent = '<span class="text-slate-400">Filesystem      Size  Used Avail Use% Mounted on</span>\n' +
+                                  '/dev/nvme0n1p2  460G  112G  325G  <span class="text-brand-400">26%</span> /\n' +
+                                  '/dev/nvme0n1p1  511M  6.1M  505M   2% /boot/efi\n' +
+                                  'tmpfs            63G     0   63G   0% /dev/shm';
+            } else if (type === 'bench') {
+                responseContent = '<span class="text-amber-400">[info]</span> Starting bare-metal multi-thread workload stresser...\n' +
+                                  '<span class="text-cyan-400">[stres-01]</span> Core 1: 100% saturation [OK]\n' +
+                                  '<span class="text-cyan-400">[stres-02]</span> Core 2: 100% saturation [OK]\n' +
+                                  '<span class="text-emerald-400">[stres-done]</span> Completed in 1500ms. Floating Ops: 12.44 TFLOPS.';
+            }
+
+            const responseDiv = document.createElement('div');
+            responseDiv.className = 'text-neutral-300 whitespace-pre-line pl-4 font-mono text-[11px] leading-relaxed border-l-2 border-slate-800';
+            responseDiv.innerHTML = responseContent;
+            
+            shellLogs.insertBefore(responseDiv, cursorLine);
+            shellLogs.scrollTop = shellLogs.scrollHeight;
+        }
+
+        function clearDemoOutput() {
+            const shellLogs = document.getElementById('shell-logs');
+            const cursorLine = document.getElementById('shell-cursor-line');
+            shellLogs.innerHTML = '';
+            shellLogs.appendChild(cursorLine);
+        }
+
+        // Pricing estimate updates
+        function updatePricingEstimate() {
+            const cpuVal = parseInt(document.getElementById('slider-cpu').value);
+            const ramVal = parseInt(document.getElementById('slider-ram').value);
+            const ssdVal = parseInt(document.getElementById('slider-ssd').value);
+
+            // Labels
+            document.getElementById('calc-cpu-lbl').textContent = cpuVal + (cpuVal === 1 ? ' Core' : ' Cores');
+            document.getElementById('calc-ram-lbl').textContent = ramVal + ' GB';
+            document.getElementById('calc-ssd-lbl').textContent = ssdVal + ' GB';
+
+            // Algebra
+            const basePrice = 5;
+            const cpuCost = cpuVal * 4;
+            const ramCost = ramVal * 1.5;
+            const ssdCost = ssdVal * 0.05;
+
+            const totalMonthly = basePrice + cpuCost + ramCost + ssdCost;
+            const totalHourly = totalMonthly / 720;
+
+            document.getElementById('calc-price-monthly').textContent = '$' + totalMonthly.toFixed(2);
+            document.getElementById('calc-price-hourly').textContent = 'Billed at ~$' + totalHourly.toFixed(3) + ' / hour';
+        }
+
+        // Contact Simulation
+        function handleDemoContact(event) {
+            event.preventDefault();
+            document.getElementById('contact-form').classList.add('hidden');
+            document.getElementById('contact-success').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
